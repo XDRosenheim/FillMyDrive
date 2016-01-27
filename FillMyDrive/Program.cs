@@ -24,8 +24,9 @@ namespace FillMyDrive {
             var root = new DirectoryInfo( "/" );
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" +
                                  "1234567890+*'!\\\"#¤%&/()=?§½@£$€{[]}-_.,:;<>\n\r\t";
-            if(File.Exists( root + "file.fillMe" )) {
-                using(var fs = File.Open( root + "file.fillMe", FileMode.Append )) {
+            var fileName = Path.GetRandomFileName();
+            if(File.Exists( root + fileName )) {
+                using(var fs = File.Open( root + fileName, FileMode.Append )) {
                     while(true) {
                         for(var i = 0; i < Environment.TickCount; i++) {
                             var rnd = new Random();
@@ -35,7 +36,7 @@ namespace FillMyDrive {
                     }
                 }
             }
-            using(var fs = File.Create( root + "file.fillMe" )) {
+            using(var fs = File.Create( root + fileName )) {
                 while(true) {
                     for(var i = 0; i < Environment.TickCount; i++) {
                         var rnd = new Random();
