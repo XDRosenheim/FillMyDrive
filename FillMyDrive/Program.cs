@@ -38,7 +38,7 @@ namespace FillMyDrive {
                         moreDirs = directory.GetDirectories();
                         break;
                     } catch(UnauthorizedAccessException uae) {
-                        if (!Debug) continue;
+                        if(!Debug) continue;
                         Console.WriteLine( uae );
                         Console.ReadKey();
                     }
